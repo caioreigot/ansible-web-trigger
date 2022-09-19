@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .hover-black-bg {
+    @apply hover:border-white hover:text-white hover:bg-black active:bg-[#1f1f1f];
+  }
+}
