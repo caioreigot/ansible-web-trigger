@@ -1,9 +1,9 @@
 <?php
-  set_time_limit(0); // disable timeout
-  ob_implicit_flush(); // disable output caching 
+  set_time_limit(0); // Disable timeout
+  ob_implicit_flush(); // Disable output caching
 
   // Settings    
-  $address = 'localhost';
+  $address = "localhost";
   $port = 5000;
 
   /*
@@ -27,19 +27,28 @@
   }
 
   socket_listen($serverSocket, 5);
-  echo("Listening...\n");
+  echo("Listening in $address:$port ...\n");
 
   $client = socket_accept($serverSocket);
 
   // Read 1600 bytes from client
-  $input = socket_read($client, 1600);
-
-  $data = json_decode(explode("\n", $input)[18]) or die('Não foi possível pegar os dados da requisição.');
-
-  /* Força o fechamento da conexão */
-  $linger = array('l_linger' => 0, 'l_onoff' => 1);
-  socket_set_option($serverSocket, SOL_SOCKET, SO_LINGER, $linger);
-  socket_set_option($client, SOL_SOCKET, SO_LINGER, $linger);
+  $input = socket_read($client, 1500);
+  
+  $httpRequestLines = explode("\r\n", $input);
+  $requestLine = $httpRequestLines[0];
+  
+  // If the request is a GET at the root "localhost/"
+  if (strpos($requestLine, "GET / ") !== false) {
+    $env_variables = "ANSIBLE_CALLBACK_WHITELIST=json ANSIBLE_STDOUT_CALLBACK=json ";
+    $output = shell_exec($env_variables . "ansible-playbook -i inventory.ini ping.yml");
+    
+    socket_write($client, 
+      "HTTP/1.1 200 OK\r\n" .
+      "Content-Type: text/html;charset=UTF-8\r\n" .
+      "Access-Control-Allow-Origin: *\r\n\r\n" .
+      $output
+    );
+  }
 
   socket_close($serverSocket);
   socket_close($client);
