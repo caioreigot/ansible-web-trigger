@@ -20,14 +20,14 @@
     socket_bind(resource $socket, string $address[, int $port = 0])
     Bind socket to listen to address and port
   */
-  socket_bind($serverSocket, $address, $port) or die('Não foi possível vincular ao endereço.');
+  socket_bind($serverSocket, $address, $port) or die("Unable to bind address.\n");
 
   if (socket_listen($serverSocket, 5) === false) {
     echo "Listen Failed " . socket_strerror(socket_last_error($serverSocket)) . "\n";
   }
 
   socket_listen($serverSocket, 5);
-  echo("Listening in $address:$port ...\n");
+  echo("Listening in $address:$port\n");
 
   $client = socket_accept($serverSocket);
 

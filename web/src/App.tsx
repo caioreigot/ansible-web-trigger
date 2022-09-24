@@ -1,8 +1,10 @@
+import './styles/jsonFormatterStyles.css';
 import './styles/main.css';
 
 import { useState, ReactElement } from 'react';
-import { AnsibleCallback } from './interfaces';
-import runAnsible from './runAnsible';
+import { AnsibleCallback } from './aux/interfaces';
+import runAnsible from './aux/runAnsible';
+import openJsonFormatter from './aux/openJsonFormatter';
 
 function App() {
   const [log, setLog] = useState<AnsibleCallback | null>(null);
@@ -10,11 +12,11 @@ function App() {
   const renderLog = (): ReactElement[] => {
     const statsElements: ReactElement[] = [];
 
-    Object.keys(log!.stats).forEach(key => {
+    Object.keys(log!.stats).forEach((key, index) => {
       const stat = log!.stats[key];
 
       statsElements.push(
-        <div className="block">
+        <div className="block" key={index}>
           <p className="block text-cyan-400">[{key}]</p>
           <p className="block">
             <span className="text-green-300">ok={stat?.ok ?? '?'}</span>&nbsp;
@@ -41,7 +43,10 @@ function App() {
       </button>
       <div className="grow w-full bg-black rounded-[4px] p-[16px] overflow-y-auto">
         {log &&
-          renderLog()
+          <>
+            {renderLog()}
+            <p className="block">Click <span onClick={openJsonFormatter} className="font-black text-teal-300 hover:cursor-pointer">here</span> to see the full result in JSON</p>
+          </>
         }
       </div>
     </div>
