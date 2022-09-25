@@ -29,27 +29,30 @@
   socket_listen($serverSocket, 5);
   echo("Listening in $address:$port\n");
 
-  $client = socket_accept($serverSocket);
+  while (true) {
+    $client = socket_accept($serverSocket);
 
-  // Read 1600 bytes from client
-  $input = socket_read($client, 1500);
-  
-  $httpRequestLines = explode("\r\n", $input);
-  $requestLine = $httpRequestLines[0];
-  
-  // If the request is a GET at the root "localhost/"
-  if (strpos($requestLine, "GET / ") !== false) {
-    $env_variables = "ANSIBLE_CALLBACK_WHITELIST=json ANSIBLE_STDOUT_CALLBACK=json ";
-    $output = shell_exec($env_variables . "ansible-playbook -i inventory.ini ping.yml");
+    // Read 1600 bytes from client
+    $input = socket_read($client, 1500);
     
-    socket_write($client, 
-      "HTTP/1.1 200 OK\r\n" .
-      "Content-Type: text/html;charset=UTF-8\r\n" .
-      "Access-Control-Allow-Origin: *\r\n\r\n" .
-      $output
-    );
+    $httpRequestLines = explode("\r\n", $input);
+    $requestLine = $httpRequestLines[0];
+    
+    // If the request is a GET at the root "localhost/"
+    if (strpos($requestLine, "GET / ") !== false) {
+      $env_variables = "ANSIBLE_CALLBACK_WHITELIST=json ANSIBLE_STDOUT_CALLBACK=json ";
+      $output = shell_exec($env_variables . "ansible-playbook -i ./ansible/inventory.ini ./ansible/ping.yml");
+      
+      socket_write($client, 
+        "HTTP/1.1 200 OK\r\n" .
+        "Content-Type: text/html;charset=UTF-8\r\n" .
+        "Access-Control-Allow-Origin: *\r\n\r\n" .
+        $output
+      );
+    }
+
+    socket_close($client);
   }
 
   socket_close($serverSocket);
-  socket_close($client);
 ?>

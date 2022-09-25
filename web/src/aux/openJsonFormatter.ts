@@ -16,11 +16,13 @@ const createModal = (): HTMLDivElement => {
   
   const parentDiv: HTMLDivElement = document.createElement('div');
   const formatter = new JSONFormatter(ansibleJsonResponse, 1, jsonFormatterConfig);
+  const jsonFormatterWrapper: HTMLDivElement = document.createElement('div');
   const jsonFormatterDisplay: HTMLDivElement = formatter.render();
   const closeButton = document.createElement('button');
 
   parentDiv.classList.add('json-formatter-modal');
-  jsonFormatterDisplay.classList.add('json-formatter-display')
+  jsonFormatterWrapper.classList.add('json-formatter-wrapper')
+  jsonFormatterDisplay.classList.add('json-formatter-display', 'scrollbar');
   closeButton.classList.add('close-button');
 
   closeButton.innerHTML = '&times;';
@@ -32,8 +34,9 @@ const createModal = (): HTMLDivElement => {
       .remove();
   }
 
-  parentDiv.appendChild(jsonFormatterDisplay);
-  jsonFormatterDisplay.appendChild(closeButton);
+  jsonFormatterWrapper.appendChild(jsonFormatterDisplay);
+  parentDiv.appendChild(jsonFormatterWrapper);
+  jsonFormatterWrapper.prepend(closeButton);
 
   return parentDiv;
 }

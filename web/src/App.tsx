@@ -34,14 +34,19 @@ function App() {
   }
 
   return (
-    <div className="h-full flex flex-col items-center justify-center w-4/5 p-[24px]">
-      <h1 className="font-medium text-3xl text-center text-black">
-        Ansible Web Trigger
-      </h1>
-      <button onClick={() => runAnsible(setLog)} className="text-black border-2 border-black py-[8px] w-1/3 my-[16px] hover-black-bg">
-        Run
-      </button>
-      <div className="grow w-full bg-black rounded-[4px] p-[16px] overflow-y-auto">
+    <div className="h-full flex flex-row items-center justify-center space-x-8 w-full p-[16px]">
+      <div className="w-1/4 flex flex-col justify-center items-center">
+        <h1 className="font-medium text-3xl text-center text-black">
+          Ansible Web Trigger
+        </h1>
+        <button onClick={e => runAnsible(e, setLog)} className="w-full min-w-[80px] font-black text-black border-2 border-black py-[8px] my-[16px] hover-black-bg rounded-[2px]">
+          Run
+        </button>
+        <a className="footer text-white text-sm text-center bg-black w-[180px] py-[6px] rounded-[2px]" href="https://github.com/caioreigot" target="_blank">
+          Caio Costa
+        </a>
+      </div>
+      <div className="h-full w-3/4 min-w-[400px] bg-black rounded-[4px] p-[24px] overflow-y-auto scrollbar">
         {log &&
           <>
             {renderLog()}

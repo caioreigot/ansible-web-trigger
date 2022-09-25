@@ -7,3 +7,24 @@
     @apply hover:border-white hover:text-white hover:bg-black active:bg-[#1f1f1f];
   }
 }
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #121214;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #22d3ee;
+    border-radius: 100vh;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #11c5e0;
+  }
+}

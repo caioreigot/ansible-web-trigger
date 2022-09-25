@@ -8,15 +8,20 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.json-formatter-display {
+.json-formatter-wrapper {
   height: clamp(400px, 80%, 1000px);
   width: clamp(500px, 80%, 1200px);
   position: relative;
-  user-select: none;
   border: 0;
   border-radius: 4px;
-  padding: 30px;
   background-color: rgb(30, 30, 30);
+}
+
+.json-formatter-display {
+  height: 100%;
+  width: 100%;
+  user-select: none;
+  padding: 30px;
   font-size: 1.1rem;
   overflow: auto;
 }
@@ -25,9 +30,9 @@
   position: absolute;
   top: 0;
   right: 0;
-  margin: 5px 10px;
+  margin: 5px 15px;
   padding: 0 10px;
-  font-size: 28px;
+  font-size: 38px;
   border: 0px;
   border-radius: 2px;
   color: #fc5b5a;
