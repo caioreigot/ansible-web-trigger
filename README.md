@@ -1,6 +1,6 @@
 # Ansible Web Trigger
 
-A simple interface where you can give commands to ansible through the execution of scripts in the shell by the PHP server, which returns the result to the web client.
+A simple interface where you can give commands to Ansible through the execution of scripts in the shell by the PHP server, which returns the result to the web client.
 
 ## Requirements to run the project locally:
 - Install Ansible
