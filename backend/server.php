@@ -42,6 +42,10 @@
     if (strpos($requestLine, "GET / ") !== false) {
       $env_variables = "ANSIBLE_CALLBACK_WHITELIST=json ANSIBLE_STDOUT_CALLBACK=json ";
       $output = shell_exec($env_variables . "ansible-playbook -i ./ansible/inventory.ini ./ansible/ping.yml");
+
+      // Stripping any text before the JSON
+      $aux = explode('{', $output, 2);
+      $output = '{' . $aux[1];
       
       socket_write($client, 
         "HTTP/1.1 200 OK\r\n" .
